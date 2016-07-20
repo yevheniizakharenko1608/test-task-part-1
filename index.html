@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+<script type="text/javascript">
+{
+ 
+function createArray(){          // метод для ініціалізації 3-вимірного масив рандомом
+	
+	var TEN = 10;
+	var arr = new Array(10);
+
+	for(var i = 0; i < TEN; i ++){
+		arr[i] = new Array(10);
+		for(var j = 0; j < TEN; j++){
+			arr[i][j] = new Array(10);
+			for(var k = 0; k < TEN; k++){
+				arr[i][j][k] = Math.random() * (9 + 9) - 9;
+			}
+
+		}
+	}
+
+	return arr;                        // метод повертає 3-вимірний масив
+}
+
+function findMultiplResult(arr){  
+// метод для знаходження добутку всіх 10-тьох елементів у кожних площинах, перпендикулярно до цієї площини
+	var TEN = 10, count = 0;
+	var multFirst = 1, multSecond = 1, multThird = 1;
+	var multFirstSquareArr = new Array(100);
+	var multSecondSquareArr = new Array(100);
+	var multThirdSquareArr = new Array(100);
+	for(var i = 0; i < arr.length; i ++){
+		for(var j = 0; j < arr[i].length; j++){
+   			for(var k = 0; k < arr[i][j].length; k++){
+   			multFirst = arr[i][j][k] * multFirst;
+   			multSecond = arr[j][k][i] * multSecond;
+   			multThird = arr[k][i][j] * multThird;
+   			}
+   			multFirstSquareArr[count]  =  multFirst;  // формую по масиву для кожної площини та записую у них
+   			multSecondSquareArr[count] =  multSecond; // добуток кожних 10 елементів, в одній площині
+   			multThirdSquareArr[count]  =  multThird;  // 100 елементів (10х10)
+   			multFirst = multSecond = multThird = 1;
+   			++count;
+		}
+	}
+	var finalSquareArr = new Array(3);
+	finalSquareArr[0] = multFirstSquareArr;
+	finalSquareArr[1] = multSecondSquareArr;
+	finalSquareArr[2] = multThirdSquareArr;
+
+	return finalSquareArr;  // повертаю масив, що містить у собі 3 масива з добутком елементів у кожній площині
+}
+
+function finalArr(arr){
+
+	var minVal, count;
+	var finalArray = new Array(3);
+
+	for(var i = 0; i < arr.length; i++ ){
+		minVal = arr[i][0];
+		count = 0;
+		for(var j = 0; j < arr[i].length; j ++){
+			if(arr[i][j] < minVal) {       // у кожному масиві знаходжу мінімальний елемент та
+				minVal = arr[i][j];        // запам'ятовую його позицію
+				count = j;      
+				}
+			}
+		finalArray[i] = count + 1;  // збільшую значення позиції на 1, бо нумерація починається з 0
+	}
+
+	return finalArray;
+}
+
+
+var initRandomArr = createArray();
+var multiplResultArr = findMultiplResult(initRandomArr);
+var arr = finalArr(multiplResultArr);
+					// у результаті отримую 3 точки відповідно для кожної площини
+console.log(arr);  // наприклад [15,88,57] це означає, що у першій площині перпендикуляр з добутком мінімальних елементів знаходиться на 1 рядку та 5 колонці, 88 - восьмий рядок і восьма колонка....
+
+} 
+</script>
+</body>
+</html>
